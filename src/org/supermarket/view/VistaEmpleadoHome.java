@@ -23,6 +23,7 @@ public class VistaEmpleadoHome extends javax.swing.JFrame {
      */
     private VistaEmpleadoHome() {
         this.setLocationRelativeTo(null);
+        this.setTitle("Inicio");
         initComponents();
     }
 
