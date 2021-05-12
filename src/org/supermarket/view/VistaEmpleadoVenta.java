@@ -22,6 +22,7 @@ import org.supermarket.model.Ventas;
  * @author alberto
  */
 public class VistaEmpleadoVenta extends javax.swing.JInternalFrame {
+
     private static VistaEmpleadoVenta vistaEmpleadoVenta = null;
     private final ArrayList<Productos> listaVenta;
     private Productos productos;
@@ -29,9 +30,9 @@ public class VistaEmpleadoVenta extends javax.swing.JInternalFrame {
     private final DAOVentas daoVentas;
     private final DefaultTableModel modeloTabla;
     private long TOTAL;
-    private  Usuarios usuario;
+    private Usuarios usuario;
     private static DateFormat formatoFecha;
-     private static DateFormat formatoHora;
+    private static DateFormat formatoHora;
 
     /**
      * Creates new form VistaEmpleadoVenta
@@ -43,7 +44,8 @@ public class VistaEmpleadoVenta extends javax.swing.JInternalFrame {
         daoAlmacen = new DAOAlmacen();
         daoVentas = new DAOVentas();
         formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
-        formatoHora = new SimpleDateFormat("hh:mm:ss a");    }
+        formatoHora = new SimpleDateFormat("hh:mm:ss a");
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -215,22 +217,22 @@ public class VistaEmpleadoVenta extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    public static VistaEmpleadoVenta getInstance(){
+    public static VistaEmpleadoVenta getInstance() {
         if (vistaEmpleadoVenta == null) {
             vistaEmpleadoVenta = new VistaEmpleadoVenta();
             return vistaEmpleadoVenta;
         }
         return vistaEmpleadoVenta;
     }
-    
-    public  void UsuarioResgistrado(Usuarios usuario){
-       this.usuario = usuario;
-    }  
-    
-    
+
+    public void UsuarioResgistrado(Usuarios usuario) {
+        this.usuario = usuario;
+    }
+
+
     private void btnAgregarProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarProductoActionPerformed
         // TODO add your handling code here:
-         try {
+        try {
             productos = new Productos();
             productos.setIdProducto(Long.parseLong(txtIdProducto.getText().trim()));
             productos = daoAlmacen.mostrarUno(productos);
@@ -249,13 +251,13 @@ public class VistaEmpleadoVenta extends javax.swing.JInternalFrame {
         listaVenta.forEach((producto) -> {
             modeloTabla.addRow(new Object[]{producto.getIdProducto(), producto.getDescripcion(), producto.getPiezas(), producto.getPrecio()});
         });
-        
+
     }//GEN-LAST:event_btnAgregarProductoActionPerformed
 
     private void btnRealizarVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRealizarVentaActionPerformed
         // TODO add your handling code here:
-        
-         int respuesta;
+        modeloTabla.setRowCount(0);
+        int respuesta;
         long cantidad = Long.parseLong(JOptionPane.showInputDialog(null, "Ingrese la cantidad de dinero a ingresar"));
         long cambio = cantidad - TOTAL;
         respuesta = JOptionPane.showConfirmDialog(null, "Desea Continuar?", "Venta", JOptionPane.YES_NO_OPTION);
@@ -265,13 +267,12 @@ public class VistaEmpleadoVenta extends javax.swing.JInternalFrame {
                 listaVenta.forEach((producto) -> {
                     productos = daoAlmacen.mostrarUno(producto);
                     long piezas = productos.getPiezas();
-                    
+
                     producto.setPiezas(piezas - producto.getPiezas());
                     daoAlmacen.actualizar(producto);
                 });
                 JOptionPane.showMessageDialog(null, "Cambio: " + cambio);
-                
-                
+
                 Ventas venta = new Ventas(formatoFecha.format(new Date()), formatoHora.format(new Date()), usuario.getId(), TOTAL);
                 daoVentas.guardar(venta);
                 modeloTabla.setRowCount(0);
@@ -279,6 +280,8 @@ public class VistaEmpleadoVenta extends javax.swing.JInternalFrame {
                 txtIdProducto.setText("");
                 txtSubTotal.setText("");
                 txtTotal.setText("");
+                listaVenta.clear();
+                TOTAL=0;
                 break;
             case 1:
                 JOptionPane.showMessageDialog(null, "Se cancelo la venta");
