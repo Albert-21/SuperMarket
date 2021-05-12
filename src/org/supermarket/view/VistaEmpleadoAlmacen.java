@@ -39,7 +39,6 @@ public class VistaEmpleadoAlmacen extends javax.swing.JInternalFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jToolBar1 = new javax.swing.JToolBar();
-        jButton1 = new javax.swing.JButton();
         btnConsultarAlamacen = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -49,11 +48,6 @@ public class VistaEmpleadoAlmacen extends javax.swing.JInternalFrame {
         setClosable(true);
 
         jToolBar1.setRollover(true);
-
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/supermarket/images/home_icon-icons.com_73532.png"))); // NOI18N
-        jButton1.setText("Inicio");
-        jButton1.setFocusable(false);
-        jToolBar1.add(jButton1);
 
         btnConsultarAlamacen.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/supermarket/images/trolley3_122342.png"))); // NOI18N
         btnConsultarAlamacen.setText("Consultar Almacen");
@@ -154,7 +148,6 @@ public class VistaEmpleadoAlmacen extends javax.swing.JInternalFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable TablaProductos;
     private javax.swing.JButton btnConsultarAlamacen;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
