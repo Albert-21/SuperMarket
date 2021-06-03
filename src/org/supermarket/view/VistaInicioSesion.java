@@ -22,6 +22,7 @@ public class VistaInicioSesion extends javax.swing.JFrame {
     private static VistaInicioSesion vistaInicioSesion = null;
     private final DAOUsuario daoUsuario;
     private VistaEmpleadoHome vistaEmpleadoHome;
+    private VistaAdministradorHome vistaAdministradorHome;
 
     /**
      * Creates new form InicioSesion
@@ -95,23 +96,22 @@ public class VistaInicioSesion extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    public static VistaInicioSesion getInstance(){
+    public static VistaInicioSesion getInstance() {
         if (vistaInicioSesion == null) {
-            return vistaInicioSesion =  new VistaInicioSesion();
+            return vistaInicioSesion = new VistaInicioSesion();
         }
         return vistaInicioSesion;
     }
-    
+
     private void btnIniciarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIniciarSesionActionPerformed
+        // TODO add your handling code here:
         try {
-            // TODO add your handling code here:
             this.usuario.setNombre_usuario(txtUsuario.getText().trim());
             this.usuario.setContraseña(String.valueOf(txtContraseña.getPassword()));
-           
-            try {
-                 Usuarios usuarios = daoUsuario.iniciarSesion(usuario);
-                if ("administrador".equals(usuarios.getRol())) {
-                //vistaGerente.setVisible(true);
+
+            Usuarios usuarios = daoUsuario.iniciarSesion(usuario);
+            if ("administrador".equals(usuarios.getRol())) {
+                vistaAdministradorHome.setVisible(true);
                 this.setVisible(false);
             } else {
                 if ("cajero".equals(usuarios.getRol())) {
@@ -121,14 +121,12 @@ public class VistaInicioSesion extends javax.swing.JFrame {
                     this.setVisible(false);
                 }
             }
-            } catch (NullPointerException e) {
-                JOptionPane.showMessageDialog(null,"Usuario o contraseña no validos");
-            }
-            
-
+        } catch (NullPointerException e) {
+            JOptionPane.showMessageDialog(null, "Usuario o contraseña no validos");
         } catch (Exception ex) {
             Logger.getLogger(VistaInicioSesion.class.getName()).log(Level.SEVERE, null, ex);
         }
+
     }//GEN-LAST:event_btnIniciarSesionActionPerformed
 
     /**

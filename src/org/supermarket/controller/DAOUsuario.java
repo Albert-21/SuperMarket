@@ -29,10 +29,10 @@ public class DAOUsuario implements DaoGeneral<Usuarios> {
     
     
     public Usuarios iniciarSesion(Usuarios usuarioo) throws Exception{
-        usuario = new Usuarios();
         session = HibernateUtil.getSessionFactory().openSession();
         try {
-            usuario = (Usuarios) session.createQuery("SELECT pojo FROM Usuarios pojo WHERE nombre_usuario = '" +usuarioo.getNombre_usuario()+"' AND contraseña = '"+usuarioo.getContraseña()+"'" ).uniqueResult();
+            Query query =  session.createQuery("SELECT pojo FROM Usuarios pojo WHERE nombre_usuario = '" +usuarioo.getNombre_usuario().trim()+"' AND contraseña = '"+usuarioo.getContraseña().trim()+"'" );
+            usuario = (Usuarios) query.uniqueResult();
         } catch (HibernateException ex) {
             Logger.getLogger(DAOUsuario.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
@@ -101,7 +101,6 @@ public class DAOUsuario implements DaoGeneral<Usuarios> {
 
     @Override
     public Usuarios mostrarUno(Usuarios pojo) {
-        usuario = new Usuarios();
         session = HibernateUtil.getSessionFactory().openSession();
         try {
             usuario = (Usuarios) session.createQuery("SELECT pojo FROM Usuarios pojo WHERE id = " + pojo.getId()).uniqueResult();

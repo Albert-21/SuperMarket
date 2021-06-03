@@ -74,7 +74,7 @@ public class VistaEmpleadoAlmacen extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-                "ID Producto", "Descripcion", "Precio", "Piezas Disponibles"
+                "ID Producto", "Nombre", "Descripcion", "Precio", "Piezas Disponibles"
             }
         ));
         jScrollPane1.setViewportView(TablaProductos);

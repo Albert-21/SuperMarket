@@ -83,6 +83,11 @@ public class Productos {
     public void setPiezas(long piezas) {
         this.piezas = piezas;
     }
+
+    @Override
+    public String toString() {
+        return "Producto {" + "id_producto=" + id_producto + ", nombre_producto=" + nombre_producto + ", descripcion=" + descripcion + ", precio=" + precio + ", piezas=" + piezas + '}';
+    }
     
     
     
