@@ -8,8 +8,11 @@ package org.supermarket.model;
 import java.io.Serializable;
 import java.sql.Date;
 import java.sql.Time;
+import java.util.ArrayList;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -23,6 +26,7 @@ public class Ventas implements Serializable {
     
     @Id
     @Column
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @Column
     private String fecha;
@@ -32,15 +36,18 @@ public class Ventas implements Serializable {
     private long id_empleado;
     @Column
     private long total;
+    @Column
+    private String lista;
 
     public Ventas() {
     }
 
-    public Ventas(String fecha, String hora, long id_empleado, long total) {
+    public Ventas(String fecha, String hora, long id_empleado, long total,String lista) {
         this.fecha = fecha;
         this.hora = hora;
         this.id_empleado = id_empleado;
         this.total = total;
+        this.lista = lista;
     }
 
     
@@ -84,6 +91,14 @@ public class Ventas implements Serializable {
 
     public void setTotal(long total) {
         this.total = total;
+    }
+
+    public String getLista() {
+        return lista;
+    }
+
+    public void setLista(String lista) {
+        this.lista = lista;
     }
 
    

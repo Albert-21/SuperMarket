@@ -5,10 +5,17 @@
  */
 package org.supermarket.view;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import javax.swing.DefaultCellEditor;
+import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import org.supermarket.controller.DAOVentas;
+import org.supermarket.model.Productos;
 import org.supermarket.model.Ventas;
 
 /**
@@ -21,6 +28,9 @@ public class VistaAdministradorVentas extends javax.swing.JInternalFrame {
     private DAOVentas daoVentas;
     private Ventas ventas;
     private DefaultTableModel modeloTabla;
+    private final java.lang.reflect.Type type = new TypeToken<List<Productos>>() {
+    }.getType();
+    private JComboBox comboBox;
 
     /**
      * Creates new form VistaAdministradorVentas
@@ -57,6 +67,7 @@ public class VistaAdministradorVentas extends javax.swing.JInternalFrame {
         jLabel1 = new javax.swing.JLabel();
         fondo = new javax.swing.JLabel();
 
+        setClosable(true);
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -107,7 +118,7 @@ public class VistaAdministradorVentas extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-                "ID", "Fecha", "ID Empleado", "Productos", "Total"
+                "ID", "Fecha", "ID Empleado", "Hora", "Lista", "Total"
             }
         ));
         jScrollPane1.setViewportView(tablaVentas);
@@ -158,13 +169,20 @@ public class VistaAdministradorVentas extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         modeloTabla.setRowCount(0);
         List<Ventas> Lista = daoVentas.mostrarTodos();
-
         Lista.forEach((venta) -> {
+            Gson jsonArray = new Gson();
+            List<Productos> lista = jsonArray.fromJson(venta.getLista(), type);
+            comboBox = new JComboBox();
+            for (Productos productos : lista) {
+                comboBox.addItem(productos.getNombre_producto());
+            }
+            tablaVentas.getColumnModel().getColumn(4).setCellEditor(new DefaultCellEditor(comboBox));
             modeloTabla.addRow(new Object[]{
                 venta.getId(),
                 venta.getFecha(),
                 venta.getId_empleado(),
                 venta.getHora(),
+                "",
                 venta.getTotal()
             });
         });

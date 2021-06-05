@@ -5,6 +5,7 @@
  */
 package org.supermarket.view;
 
+import com.google.gson.Gson;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -26,6 +27,7 @@ public class VistaEmpleadoVenta extends javax.swing.JInternalFrame {
     private static VistaEmpleadoVenta vistaEmpleadoVenta = null;
     private final ArrayList<Productos> listaVenta;
     private Productos productos;
+    private Productos temProducto;
     private final DAOAlmacen daoAlmacen;
     private final DAOVentas daoVentas;
     private final DefaultTableModel modeloTabla;
@@ -33,6 +35,7 @@ public class VistaEmpleadoVenta extends javax.swing.JInternalFrame {
     private Usuarios usuario;
     private static DateFormat formatoFecha;
     private static DateFormat formatoHora;
+    private final ArrayList<Productos> temp;
 
     /**
      * Creates new form VistaEmpleadoVenta
@@ -45,6 +48,7 @@ public class VistaEmpleadoVenta extends javax.swing.JInternalFrame {
         daoVentas = new DAOVentas();
         formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
         formatoHora = new SimpleDateFormat("hh:mm:ss a");
+        temp = new ArrayList<>();
     }
 
     /**
@@ -100,7 +104,7 @@ public class VistaEmpleadoVenta extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-                "ID producto", "Descripcion", "Cantidad", "Importe"
+                "ID producto", "Nombre", "Descripcion", "Cantidad", "Importe"
             }
         ));
         jScrollPane1.setViewportView(tablaProductos);
@@ -227,6 +231,7 @@ public class VistaEmpleadoVenta extends javax.swing.JInternalFrame {
             productos.setPiezas(Integer.parseInt(txtCantidad.getText().trim()));
             TOTAL += productos.getPiezas() * productos.getPrecio();
             listaVenta.add(productos);
+            System.out.println(productos.getPiezas());
             txtSubTotal.setText(String.valueOf(TOTAL));
             txtTotal.setText(String.valueOf(TOTAL));
             txtCantidad.setText("");
@@ -237,7 +242,8 @@ public class VistaEmpleadoVenta extends javax.swing.JInternalFrame {
         }
         modeloTabla.setRowCount(0);
         listaVenta.forEach((producto) -> {
-            modeloTabla.addRow(new Object[]{producto.getIdProducto(), producto.getDescripcion(), producto.getPiezas(), producto.getPrecio()});
+            temp.add(producto);
+            modeloTabla.addRow(new Object[]{producto.getIdProducto(), producto.getNombre_producto(),producto.getDescripcion(), producto.getPiezas(), producto.getPrecio()});
         });
 
     }//GEN-LAST:event_btnAgregarProductoActionPerformed
@@ -251,17 +257,16 @@ public class VistaEmpleadoVenta extends javax.swing.JInternalFrame {
         respuesta = JOptionPane.showConfirmDialog(null, "Desea Continuar?", "Venta", JOptionPane.YES_NO_OPTION);
         switch (respuesta) {
             case 0:
-
                 listaVenta.forEach((producto) -> {
                     productos = daoAlmacen.mostrarUno(producto);
                     long piezas = productos.getPiezas();
-
                     producto.setPiezas(piezas - producto.getPiezas());
                     daoAlmacen.actualizar(producto);
                 });
                 JOptionPane.showMessageDialog(null, "Cambio: " + cambio);
-
-                Ventas venta = new Ventas(formatoFecha.format(new Date()), formatoHora.format(new Date()), usuario.getId(), TOTAL);
+                String json = new Gson().toJson(temp);
+                System.out.println(json);
+                Ventas venta = new Ventas(formatoFecha.format(new Date()), formatoHora.format(new Date()), usuario.getId(), TOTAL,json);
                 daoVentas.guardar(venta);
                 modeloTabla.setRowCount(0);
                 txtCantidad.setText("");
@@ -269,6 +274,7 @@ public class VistaEmpleadoVenta extends javax.swing.JInternalFrame {
                 txtSubTotal.setText("");
                 txtTotal.setText("");
                 listaVenta.clear();
+                temp.clear();
                 TOTAL=0;
                 break;
             case 1:

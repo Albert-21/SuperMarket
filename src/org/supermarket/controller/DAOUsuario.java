@@ -40,7 +40,7 @@ public class DAOUsuario implements DaoGeneral<Usuarios> {
         }
         return usuario;
     }
-    
+   
 
     @Override
     public boolean guardar(Usuarios pojo) {

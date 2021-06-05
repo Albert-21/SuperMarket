@@ -27,7 +27,7 @@ public class DAOVentasTest {
     @Test
     public void testGuardar() {
         System.out.println("guardar");
-        Ventas pojo = new Ventas("15/05/2021", "17:32", 0, 10);
+        Ventas pojo = new Ventas("15/05/2021", "17:32", 0, 10,"");
         DAOVentas instance = new DAOVentas();
         boolean expResult = true;
         boolean result = true;
@@ -54,7 +54,7 @@ public class DAOVentasTest {
     @Test
     public void testActualizar() {
         System.out.println("actualizar");
-        Ventas pojo = new Ventas("15/05/2021", "17:32", 0, 10);
+        Ventas pojo = new Ventas("15/05/2021", "17:32", 0, 10,"");
         pojo.setId(0);
         DAOVentas instance = new DAOVentas();
         boolean expResult = true;
@@ -68,7 +68,7 @@ public class DAOVentasTest {
     @Test
     public void testMostrarUno() {
         System.out.println("mostrarUno");
-        Ventas pojo = new Ventas("15/05/2021", "17:32", 0, 10);
+        Ventas pojo = new Ventas("15/05/2021", "17:32", 0, 10,"");
         DAOVentas instance = new DAOVentas();
         Ventas expResult = pojo;
         Ventas result = pojo;

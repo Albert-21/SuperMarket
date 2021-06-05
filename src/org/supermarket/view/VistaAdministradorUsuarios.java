@@ -11,7 +11,6 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import org.supermarket.controller.DAOUsuario;
-import org.supermarket.model.Productos;
 import org.supermarket.model.Usuarios;
 
 /**
@@ -75,6 +74,7 @@ public class VistaAdministradorUsuarios extends javax.swing.JInternalFrame {
         tablaUsuarios = new javax.swing.JTable();
         fondo = new javax.swing.JLabel();
 
+        setClosable(true);
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -239,6 +239,9 @@ public class VistaAdministradorUsuarios extends javax.swing.JInternalFrame {
         try {
             // TODO add your handling code here:
             usuario = new Usuarios(txtNombre.getText().trim(), txtDireccion.getText().trim(), txtTelefono.getText().trim(), txtNombreUsuario.getText().trim(),String.valueOf(txtContraseña.getPassword()), String.valueOf(comboRol.getSelectedItem()));
+            long res = Long.parseLong(JOptionPane.showInputDialog(null , "Ingrese el id"));
+            usuario.setId(res);
+            daoUsuario.actualizar(usuario);
         } catch (Exception ex) {
             Logger.getLogger(VistaAdministradorUsuarios.class.getName()).log(Level.SEVERE, null, ex);
         }

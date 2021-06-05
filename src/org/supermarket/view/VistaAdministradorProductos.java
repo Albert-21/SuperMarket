@@ -16,10 +16,12 @@ import org.supermarket.model.Productos;
  * @author victorm
  */
 public class VistaAdministradorProductos extends javax.swing.JInternalFrame {
+
     private static VistaAdministradorProductos vistaAdministradorProductos = null;
     private Productos productos;
-    private DAOAlmacen daoAlmacen ;
+    private DAOAlmacen daoAlmacen;
     private DefaultTableModel modeloTabla;
+
     /**
      * Creates new form VistaAdministradorProductos
      */
@@ -28,13 +30,13 @@ public class VistaAdministradorProductos extends javax.swing.JInternalFrame {
         daoAlmacen = new DAOAlmacen();
         modeloTabla = (DefaultTableModel) tablaProductos.getModel();
     }
+
     public static VistaAdministradorProductos getInstance() {
         if (vistaAdministradorProductos == null) {
             return vistaAdministradorProductos = new VistaAdministradorProductos();
         }
         return vistaAdministradorProductos;
     }
-
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -68,6 +70,7 @@ public class VistaAdministradorProductos extends javax.swing.JInternalFrame {
         tablaProductos = new javax.swing.JTable();
         fondo = new javax.swing.JLabel();
 
+        setClosable(true);
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -160,6 +163,12 @@ public class VistaAdministradorProductos extends javax.swing.JInternalFrame {
         jPanel1.add(txtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 120, 100, -1));
         jPanel1.add(txtDescripcion, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 150, 100, -1));
         jPanel1.add(txtPiezasDisponibles, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 180, 100, -1));
+
+        txtPrecio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtPrecioActionPerformed(evt);
+            }
+        });
         jPanel1.add(txtPrecio, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 210, 100, -1));
 
         jLabel5.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
@@ -193,43 +202,41 @@ public class VistaAdministradorProductos extends javax.swing.JInternalFrame {
 
     private void btnNewProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewProductoActionPerformed
         // TODO add your handling code here:
-        productos = new Productos(Long.parseLong(txtId_producto.getText().trim()),txtNombre.getText().trim(),txtDescripcion.getText().trim(),Long.parseLong(txtPiezasDisponibles.getText().trim()),Long.parseLong(txtPrecio.getText().trim()));
+        productos = new Productos(Long.parseLong(txtId_producto.getText().trim()), txtNombre.getText().trim(), txtDescripcion.getText().trim(), Long.parseLong(txtPrecio.getText().trim()), Long.parseLong(txtPiezasDisponibles.getText().trim()));
         daoAlmacen.guardar(productos);
-        
-        
+
+
     }//GEN-LAST:event_btnNewProductoActionPerformed
 
     private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
         // TODO add your handling code here:
-        productos = new Productos(Long.parseLong(txtId_producto.getText().trim()),txtNombre.getText().trim(),txtDescripcion.getText().trim(),Long.parseLong(txtPiezasDisponibles.getText().trim()),Long.parseLong(txtPrecio.getText().trim()));
+        productos = new Productos(Long.parseLong(txtId_producto.getText().trim()), txtNombre.getText().trim(), txtDescripcion.getText().trim(), Long.parseLong(txtPrecio.getText().trim()), Long.parseLong(txtPiezasDisponibles.getText().trim()));
         daoAlmacen.actualizar(productos);
     }//GEN-LAST:event_btnActualizarActionPerformed
 
     private void btenEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btenEliminarActionPerformed
         // TODO add your handling code here:
-        long res = Long.parseLong(JOptionPane.showInputDialog(null , "Ingrese el id del producto"));
+        long res = Long.parseLong(JOptionPane.showInputDialog(null, "Ingrese el id del producto"));
         productos = new Productos();
         productos.setIdProducto(res);
-                
+
         daoAlmacen.borrar(productos);
     }//GEN-LAST:event_btenEliminarActionPerformed
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
         // TODO add your handling code here:
         modeloTabla.setRowCount(0);
-        long res = Long.parseLong(JOptionPane.showInputDialog(null , "Ingrese el id del producto"));
+        long res = Long.parseLong(JOptionPane.showInputDialog(null, "Ingrese el id del producto"));
         productos = new Productos();
         productos.setIdProducto(res);
-                
+
         Productos prod = daoAlmacen.mostrarUno(productos);
-        modeloTabla.addRow(new Object[]
-            {
-                prod.getIdProducto(),
-                prod.getNombre_producto(),
-                prod.getDescripcion(),
-                prod.getPrecio(),
-                prod.getPiezas()
-            });
+        modeloTabla.addRow(new Object[]{
+            prod.getIdProducto(),
+            prod.getNombre_producto(),
+            prod.getDescripcion(),
+            prod.getPiezas(),
+            prod.getPrecio()});
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void btnMostarTodoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMostarTodoActionPerformed
@@ -238,16 +245,18 @@ public class VistaAdministradorProductos extends javax.swing.JInternalFrame {
         List<Productos> Lista = daoAlmacen.mostrarTodos();
 
         Lista.forEach((productos) -> {
-            modeloTabla.addRow(new Object[]
-            {
+            modeloTabla.addRow(new Object[]{
                 productos.getIdProducto(),
                 productos.getNombre_producto(),
                 productos.getDescripcion(),
-                productos.getPrecio(),
-                productos.getPiezas()
-            });
+                productos.getPiezas(),
+                productos.getPrecio(),});
         });
     }//GEN-LAST:event_btnMostarTodoActionPerformed
+
+    private void txtPrecioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPrecioActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtPrecioActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JToggleButton btenEliminar;

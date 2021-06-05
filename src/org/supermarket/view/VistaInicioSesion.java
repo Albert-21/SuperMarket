@@ -111,6 +111,7 @@ public class VistaInicioSesion extends javax.swing.JFrame {
 
             Usuarios usuarios = daoUsuario.iniciarSesion(usuario);
             if ("administrador".equals(usuarios.getRol())) {
+                vistaAdministradorHome = VistaAdministradorHome.getInstance();
                 vistaAdministradorHome.setVisible(true);
                 this.setVisible(false);
             } else {
