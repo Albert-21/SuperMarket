@@ -227,23 +227,26 @@ public class VistaEmpleadoVenta extends javax.swing.JInternalFrame {
         try {
             productos = new Productos();
             productos.setIdProducto(Long.parseLong(txtIdProducto.getText().trim()));
-            productos = daoAlmacen.mostrarUno(productos);
             productos.setPiezas(Integer.parseInt(txtCantidad.getText().trim()));
-            TOTAL += productos.getPiezas() * productos.getPrecio();
-            listaVenta.add(productos);
-            System.out.println(productos.getPiezas());
-            txtSubTotal.setText(String.valueOf(TOTAL));
-            txtTotal.setText(String.valueOf(TOTAL));
-            txtCantidad.setText("");
-            txtIdProducto.setText("");
-
+            if (productos.getPiezas() <= 0) {
+                JOptionPane.showMessageDialog(null, "No puede ser 0 o negativa la cantidad de producto");
+            } else {
+                productos = daoAlmacen.mostrarUno(productos);
+                TOTAL += productos.getPiezas() * productos.getPrecio();
+                listaVenta.add(productos);
+                System.out.println(productos.getPiezas());
+                txtSubTotal.setText(String.valueOf(TOTAL));
+                txtTotal.setText(String.valueOf(TOTAL));
+                txtCantidad.setText("");
+                txtIdProducto.setText("");
+            }
         } catch (NullPointerException e) {
             JOptionPane.showMessageDialog(null, "Producto no encondrado");
         }
         modeloTabla.setRowCount(0);
         listaVenta.forEach((producto) -> {
             temp.add(producto);
-            modeloTabla.addRow(new Object[]{producto.getIdProducto(), producto.getNombre_producto(),producto.getDescripcion(), producto.getPiezas(), producto.getPrecio()});
+            modeloTabla.addRow(new Object[]{producto.getIdProducto(), producto.getNombre_producto(), producto.getDescripcion(), producto.getPiezas(), producto.getPrecio()});
         });
 
     }//GEN-LAST:event_btnAgregarProductoActionPerformed
@@ -266,7 +269,7 @@ public class VistaEmpleadoVenta extends javax.swing.JInternalFrame {
                 JOptionPane.showMessageDialog(null, "Cambio: " + cambio);
                 String json = new Gson().toJson(temp);
                 System.out.println(json);
-                Ventas venta = new Ventas(formatoFecha.format(new Date()), formatoHora.format(new Date()), usuario.getId(), TOTAL,json);
+                Ventas venta = new Ventas(formatoFecha.format(new Date()), formatoHora.format(new Date()), usuario.getId(), TOTAL, json);
                 daoVentas.guardar(venta);
                 modeloTabla.setRowCount(0);
                 txtCantidad.setText("");
@@ -275,7 +278,7 @@ public class VistaEmpleadoVenta extends javax.swing.JInternalFrame {
                 txtTotal.setText("");
                 listaVenta.clear();
                 temp.clear();
-                TOTAL=0;
+                TOTAL = 0;
                 break;
             case 1:
                 JOptionPane.showMessageDialog(null, "Se cancelo la venta");

@@ -8,6 +8,7 @@ package org.supermarket.controller;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -15,23 +16,22 @@ import org.hibernate.Transaction;
 import org.supermarket.config.HibernateUtil;
 import org.supermarket.model.Usuarios;
 
-
 /**
  *
  * @author alberto
  */
 public class DAOUsuario implements DaoGeneral<Usuarios> {
+
     private Usuarios usuario;
     private Session session;
 
     public DAOUsuario() {
     }
-    
-    
-    public Usuarios iniciarSesion(Usuarios usuarioo) throws Exception{
+
+    public Usuarios iniciarSesion(Usuarios usuarioo) throws Exception {
         session = HibernateUtil.getSessionFactory().openSession();
         try {
-            Query query =  session.createQuery("SELECT pojo FROM Usuarios pojo WHERE nombre_usuario = '" +usuarioo.getNombre_usuario().trim()+"' AND contraseña = '"+usuarioo.getContraseña().trim()+"'" );
+            Query query = session.createQuery("SELECT pojo FROM Usuarios pojo WHERE nombre_usuario = '" + usuarioo.getNombre_usuario().trim() + "' AND contraseña = '" + usuarioo.getContraseña().trim() + "'");
             usuario = (Usuarios) query.uniqueResult();
         } catch (HibernateException ex) {
             Logger.getLogger(DAOUsuario.class.getName()).log(Level.SEVERE, null, ex);
@@ -40,7 +40,6 @@ public class DAOUsuario implements DaoGeneral<Usuarios> {
         }
         return usuario;
     }
-   
 
     @Override
     public boolean guardar(Usuarios pojo) {
@@ -48,14 +47,20 @@ public class DAOUsuario implements DaoGeneral<Usuarios> {
         session = HibernateUtil.getSessionFactory().openSession();
         Transaction transaction = session.beginTransaction();
         try {
-            session.save(pojo);
-            res = true;
-            transaction.commit();
-            System.out.print("Guardado");
+            if (pojo != null) {
+                session.save(pojo);
+                res = true;
+                transaction.commit();
+                JOptionPane.showMessageDialog(null, "Guardado");
+            }
+            else{
+                JOptionPane.showMessageDialog(null, "error");
+            }
         } catch (HibernateException e) {
             transaction.rollback();
             Logger.getLogger(DAOUsuario.class.getName()).log(Level.SEVERE, null, e);
             System.out.print("No se pudo guardar");
+            JOptionPane.showMessageDialog(null, "No se pudo guardar");
         } finally {
             session.close();
         }
@@ -71,6 +76,7 @@ public class DAOUsuario implements DaoGeneral<Usuarios> {
             session.delete(pojo);
             res = true;
             transaction.commit();
+            JOptionPane.showMessageDialog(null, "Borrado");
         } catch (HibernateException e) {
             transaction.rollback();
             Logger.getLogger(DAOUsuario.class.getName()).log(Level.SEVERE, null, e);
@@ -90,6 +96,7 @@ public class DAOUsuario implements DaoGeneral<Usuarios> {
             session.update(pojo);
             res = true;
             transaction.commit();
+            JOptionPane.showMessageDialog(null, "Actualizado");
         } catch (HibernateException e) {
             transaction.rollback();
             Logger.getLogger(DAOUsuario.class.getName()).log(Level.SEVERE, null, e);

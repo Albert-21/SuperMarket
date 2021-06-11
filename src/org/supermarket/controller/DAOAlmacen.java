@@ -8,6 +8,7 @@ package org.supermarket.controller;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -19,14 +20,13 @@ import org.supermarket.model.Productos;
  *
  * @author alberto
  */
-public class DAOAlmacen implements DaoGeneral<Productos>{
-     private Session session;
+public class DAOAlmacen implements DaoGeneral<Productos> {
+
+    private Session session;
 
     public DAOAlmacen() {
 
     }
-     
-     
 
     @Override
     public boolean guardar(Productos pojo) {
@@ -34,14 +34,20 @@ public class DAOAlmacen implements DaoGeneral<Productos>{
         session = HibernateUtil.getSessionFactory().openSession();
         Transaction transaction = session.beginTransaction();
         try {
-            session.save(pojo);
-            res = true;
-            transaction.commit();
-            System.out.print("Guardado");
+            if (pojo.getPiezas() <= 0 || pojo.getPrecio() <= 0) {
+                JOptionPane.showMessageDialog(null, "El numero de piezas o el precio es menor a 0"
+                        + "\nNo se Puede guardar el Producto");
+            } else {
+                session.save(pojo);
+                res = true;
+                transaction.commit();
+                JOptionPane.showMessageDialog(null, "Guardado");
+            }
         } catch (HibernateException e) {
             transaction.rollback();
             Logger.getLogger(DAOAlmacen.class.getName()).log(Level.SEVERE, null, e);
             System.out.print("No se pudo guardar");
+            JOptionPane.showMessageDialog(null, "No se pudo guardar ese ID ya esta ocupado");
         } finally {
             session.close();
         }
@@ -57,6 +63,7 @@ public class DAOAlmacen implements DaoGeneral<Productos>{
             session.delete(pojo);
             res = true;
             transaction.commit();
+            JOptionPane.showMessageDialog(null, "Borrado");
         } catch (HibernateException e) {
             transaction.rollback();
             Logger.getLogger(DAOAlmacen.class.getName()).log(Level.SEVERE, null, e);
@@ -73,9 +80,15 @@ public class DAOAlmacen implements DaoGeneral<Productos>{
         session = HibernateUtil.getSessionFactory().openSession();
         Transaction transaction = session.beginTransaction();
         try {
-            session.update(pojo);
-            res = true;
-            transaction.commit();
+            if (pojo.getPiezas() <= 0 || pojo.getPrecio() <= 0) {
+                JOptionPane.showMessageDialog(null, "El numero de piezas o el precio es menor a 0"
+                        + "\nNo se Puede actualizar el Producto");
+            } else {
+                session.update(pojo);
+                res = true;
+                transaction.commit();
+                JOptionPane.showMessageDialog(null, "Actualizado");
+            }
         } catch (HibernateException e) {
             transaction.rollback();
             Logger.getLogger(DAOAlmacen.class.getName()).log(Level.SEVERE, null, e);

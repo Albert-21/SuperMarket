@@ -8,6 +8,7 @@ package org.supermarket.controller;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -38,10 +39,12 @@ public class DAOVentas implements DaoGeneral<Ventas> {
             res = true;
             transaction.commit();
             System.out.print("Guardado");
+            JOptionPane.showMessageDialog(null,"Guardado");
         } catch (HibernateException e) {
             transaction.rollback();
             Logger.getLogger(DAOAlmacen.class.getName()).log(Level.SEVERE, null, e);
             System.out.print("No se pudo guardar");
+            JOptionPane.showMessageDialog(null,"No se pudo guardar");
         } finally {
             session.close();
         }
@@ -57,6 +60,7 @@ public class DAOVentas implements DaoGeneral<Ventas> {
             session.delete(pojo);
             res = true;
             transaction.commit();
+            JOptionPane.showMessageDialog(null,"Borrado");
         } catch (HibernateException e) {
             transaction.rollback();
             Logger.getLogger(DAOAlmacen.class.getName()).log(Level.SEVERE, null, e);
@@ -76,6 +80,7 @@ public class DAOVentas implements DaoGeneral<Ventas> {
             session.update(pojo);
             res = true;
             transaction.commit();
+            JOptionPane.showMessageDialog(null,"Actualizado");
         } catch (HibernateException e) {
             transaction.rollback();
             Logger.getLogger(DAOAlmacen.class.getName()).log(Level.SEVERE, null, e);
