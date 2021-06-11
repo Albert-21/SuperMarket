@@ -80,7 +80,7 @@ public class DAOAlmacen implements DaoGeneral<Productos> {
         session = HibernateUtil.getSessionFactory().openSession();
         Transaction transaction = session.beginTransaction();
         try {
-            if (pojo.getPiezas() <= 0 || pojo.getPrecio() <= 0) {
+            if (pojo.getPiezas() < 0 || pojo.getPrecio() < 0) {
                 JOptionPane.showMessageDialog(null, "El numero de piezas o el precio es menor a 0"
                         + "\nNo se Puede actualizar el Producto");
             } else {

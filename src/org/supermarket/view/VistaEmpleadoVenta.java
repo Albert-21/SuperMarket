@@ -231,14 +231,23 @@ public class VistaEmpleadoVenta extends javax.swing.JInternalFrame {
             if (productos.getPiezas() <= 0) {
                 JOptionPane.showMessageDialog(null, "No puede ser 0 o negativa la cantidad de producto");
             } else {
-                productos = daoAlmacen.mostrarUno(productos);
-                TOTAL += productos.getPiezas() * productos.getPrecio();
-                listaVenta.add(productos);
-                System.out.println(productos.getPiezas());
-                txtSubTotal.setText(String.valueOf(TOTAL));
-                txtTotal.setText(String.valueOf(TOTAL));
-                txtCantidad.setText("");
-                txtIdProducto.setText("");
+                Productos productosTem = daoAlmacen.mostrarUno(productos);
+                productos.setNombre_producto(productosTem.getDescripcion());
+                productos.setDescripcion(productosTem.getDescripcion());
+                productos.setPrecio(productosTem.getPrecio());
+                if (productos.getPiezas() > productosTem.getPiezas()) {
+                    JOptionPane.showMessageDialog(null, "No hay produto suficiente solo se encuentra disponibles " + productosTem.getPiezas() + " piezas");
+
+                } else {
+                    TOTAL += productos.getPiezas() * productos.getPrecio();
+                    listaVenta.add(productos);
+                    System.out.println(productos.getPiezas());
+                    txtSubTotal.setText(String.valueOf(TOTAL));
+                    txtTotal.setText(String.valueOf(TOTAL));
+                    txtCantidad.setText("");
+                    txtIdProducto.setText("");
+                }
+
             }
         } catch (NullPointerException e) {
             JOptionPane.showMessageDialog(null, "Producto no encondrado");
@@ -253,36 +262,41 @@ public class VistaEmpleadoVenta extends javax.swing.JInternalFrame {
 
     private void btnRealizarVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRealizarVentaActionPerformed
         // TODO add your handling code here:
-        modeloTabla.setRowCount(0);
         int respuesta;
         long cantidad = Long.parseLong(JOptionPane.showInputDialog(null, "Ingrese la cantidad de dinero a ingresar"));
-        long cambio = cantidad - TOTAL;
-        respuesta = JOptionPane.showConfirmDialog(null, "Desea Continuar?", "Venta", JOptionPane.YES_NO_OPTION);
-        switch (respuesta) {
-            case 0:
-                listaVenta.forEach((producto) -> {
-                    productos = daoAlmacen.mostrarUno(producto);
-                    long piezas = productos.getPiezas();
-                    producto.setPiezas(piezas - producto.getPiezas());
-                    daoAlmacen.actualizar(producto);
-                });
-                JOptionPane.showMessageDialog(null, "Cambio: " + cambio);
-                String json = new Gson().toJson(temp);
-                System.out.println(json);
-                Ventas venta = new Ventas(formatoFecha.format(new Date()), formatoHora.format(new Date()), usuario.getId(), TOTAL, json);
-                daoVentas.guardar(venta);
-                modeloTabla.setRowCount(0);
-                txtCantidad.setText("");
-                txtIdProducto.setText("");
-                txtSubTotal.setText("");
-                txtTotal.setText("");
-                listaVenta.clear();
-                temp.clear();
-                TOTAL = 0;
-                break;
-            case 1:
-                JOptionPane.showMessageDialog(null, "Se cancelo la venta");
+        if (cantidad < TOTAL) {
+            JOptionPane.showMessageDialog(null, "Es una cantidad es menor a pagar");
+        } else {
+            long cambio = cantidad - TOTAL;
+            respuesta = JOptionPane.showConfirmDialog(null, "Desea Continuar?", "Venta", JOptionPane.YES_NO_OPTION);
+            switch (respuesta) {
+                case 0:
+                    listaVenta.forEach((producto) -> {
+                        productos = daoAlmacen.mostrarUno(producto);
+                        long piezas = productos.getPiezas();
+                        producto.setPiezas(piezas - producto.getPiezas());
+                        daoAlmacen.actualizar(producto);
+                    });
+                    JOptionPane.showMessageDialog(null, "Cambio: " + cambio);
+                    String json = new Gson().toJson(temp);
+                    System.out.println(json);
+                    Ventas venta = new Ventas(formatoFecha.format(new Date()), formatoHora.format(new Date()), usuario.getId(), TOTAL, json);
+                    daoVentas.guardar(venta);
+                    modeloTabla.setRowCount(0);
+                    txtCantidad.setText("");
+                    txtIdProducto.setText("");
+                    txtSubTotal.setText("");
+                    txtTotal.setText("");
+                    listaVenta.clear();
+                    temp.clear();
+                    TOTAL = 0;
+                    modeloTabla.setRowCount(0);
+                    break;
+                case 1:
+                    JOptionPane.showMessageDialog(null, "Se cancelo la venta");
+            }
         }
+
     }//GEN-LAST:event_btnRealizarVentaActionPerformed
 
 

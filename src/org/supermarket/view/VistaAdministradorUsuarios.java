@@ -159,6 +159,12 @@ public class VistaAdministradorUsuarios extends javax.swing.JInternalFrame {
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("Telefono:");
         jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 180, -1, -1));
+
+        txtNombre.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtNombreKeyTyped(evt);
+            }
+        });
         jPanel1.add(txtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 120, 140, -1));
 
         comboRol.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "administrador", "cajero" }));
@@ -171,9 +177,27 @@ public class VistaAdministradorUsuarios extends javax.swing.JInternalFrame {
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
         jLabel7.setText("Contraseña:");
         jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 240, -1, -1));
+
+        txtDireccion.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtDireccionKeyTyped(evt);
+            }
+        });
         jPanel1.add(txtDireccion, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 150, 140, -1));
+
+        txtTelefono.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtTelefonoKeyTyped(evt);
+            }
+        });
         jPanel1.add(txtTelefono, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 180, 140, -1));
         jPanel1.add(txtContraseña, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 240, 140, -1));
+
+        txtNombreUsuario.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtNombreUsuarioKeyTyped(evt);
+            }
+        });
         jPanel1.add(txtNombreUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 210, 140, -1));
 
         jLabel5.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
@@ -191,7 +215,7 @@ public class VistaAdministradorUsuarios extends javax.swing.JInternalFrame {
         ));
         jScrollPane1.setViewportView(tablaUsuarios);
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 300, 780, 140));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 300, 780, 220));
 
         fondo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/supermarket/images/4882066.jpg"))); // NOI18N
         jPanel1.add(fondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 50, 780, 360));
@@ -204,8 +228,13 @@ public class VistaAdministradorUsuarios extends javax.swing.JInternalFrame {
     private void btnGuardarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarUsuarioActionPerformed
         try {
             // TODO add your handling code here:
-           usuario = new Usuarios(txtNombre.getText().trim(), txtDireccion.getText().trim(), txtTelefono.getText().trim(), txtNombreUsuario.getText().trim(),String.valueOf(txtContraseña.getPassword()), String.valueOf(comboRol.getSelectedItem()));
-           daoUsuario.guardar(usuario);
+            if ("".equals(txtNombre.getText().trim()) && txtDireccion.getText().trim() == "" && txtTelefono.getText().trim() == "" && txtNombreUsuario.getText().trim() == "" && String.valueOf(txtContraseña.getPassword()) == "" && String.valueOf(comboRol.getSelectedItem()) == "") {
+                JOptionPane.showMessageDialog(null, "Hay campos vacios");
+            } else {
+                usuario = new Usuarios(txtNombre.getText().trim(), txtDireccion.getText().trim(), txtTelefono.getText().trim(), txtNombreUsuario.getText().trim(), String.valueOf(txtContraseña.getPassword()), String.valueOf(comboRol.getSelectedItem()));
+                daoUsuario.guardar(usuario);
+            }
+
         } catch (Exception ex) {
             Logger.getLogger(VistaAdministradorUsuarios.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -215,50 +244,53 @@ public class VistaAdministradorUsuarios extends javax.swing.JInternalFrame {
     private void btnMostarTodoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMostarTodoActionPerformed
         // TODO add your handling code here:
         lista = daoUsuario.mostrarTodos();
-         modeloTabla.setRowCount(0);
+        modeloTabla.setRowCount(0);
         lista.forEach((Usuarios usuario) -> {
             try {
-                modeloTabla.addRow(new Object[]{usuario.getId(), usuario.getNombre_completo(), usuario.getDireccion(), usuario.getTelefono(),usuario.getNombre_usuario(),txtContraseña.getPassword(),usuario.getRol()});
+                modeloTabla.addRow(new Object[]{usuario.getId(), usuario.getNombre_completo(), usuario.getDireccion(), usuario.getTelefono(), usuario.getNombre_usuario(), txtContraseña.getPassword(), usuario.getRol()});
             } catch (Exception ex) {
                 Logger.getLogger(VistaAdministradorUsuarios.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
-        
+
     }//GEN-LAST:event_btnMostarTodoActionPerformed
 
     private void btenEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btenEliminarActionPerformed
         // TODO add your handling code here:
-        long res = Long.parseLong(JOptionPane.showInputDialog(null , "Ingrese el id"));
+        long res = Long.parseLong(JOptionPane.showInputDialog(null, "Ingrese el id"));
         usuario = new Usuarios();
         usuario.setId(res);
-                
+
         daoUsuario.borrar(usuario);
     }//GEN-LAST:event_btenEliminarActionPerformed
 
     private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
         try {
             // TODO add your handling code here:
-            usuario = new Usuarios(txtNombre.getText().trim(), txtDireccion.getText().trim(), txtTelefono.getText().trim(), txtNombreUsuario.getText().trim(),String.valueOf(txtContraseña.getPassword()), String.valueOf(comboRol.getSelectedItem()));
-            long res = Long.parseLong(JOptionPane.showInputDialog(null , "Ingrese el id"));
+            usuario = new Usuarios(txtNombre.getText().trim(), txtDireccion.getText().trim(), txtTelefono.getText().trim(), txtNombreUsuario.getText().trim(), String.valueOf(txtContraseña.getPassword()), String.valueOf(comboRol.getSelectedItem()));
+            long res = Long.parseLong(JOptionPane.showInputDialog(null, "Ingrese el id"));
             usuario.setId(res);
-            daoUsuario.actualizar(usuario);
+            if ("".equals(txtNombre.getText().trim()) && txtDireccion.getText().trim() == "" && txtTelefono.getText().trim() == "" && txtNombreUsuario.getText().trim() == "" && String.valueOf(txtContraseña.getPassword()) == "" && String.valueOf(comboRol.getSelectedItem()) == "") {
+                JOptionPane.showMessageDialog(null, "Hay campos vacios");
+            } else {
+                daoUsuario.actualizar(usuario);
+            }
         } catch (Exception ex) {
             Logger.getLogger(VistaAdministradorUsuarios.class.getName()).log(Level.SEVERE, null, ex);
         }
-           daoUsuario.actualizar(usuario);
+        daoUsuario.actualizar(usuario);
     }//GEN-LAST:event_btnActualizarActionPerformed
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
         // TODO add your handling code here:
         modeloTabla.setRowCount(0);
-        long res = Long.parseLong(JOptionPane.showInputDialog(null , "Ingrese el id del Usuario"));
+        long res = Long.parseLong(JOptionPane.showInputDialog(null, "Ingrese el id del Usuario"));
         usuario = new Usuarios();
         usuario.setId(res);
-                
+
         Usuarios result = daoUsuario.mostrarUno(usuario);
         try {
-            modeloTabla.addRow(new Object[]
-            {
+            modeloTabla.addRow(new Object[]{
                 result.getId(),
                 result.getNombre_completo(),
                 result.getDireccion(),
@@ -271,6 +303,65 @@ public class VistaAdministradorUsuarios extends javax.swing.JInternalFrame {
             Logger.getLogger(VistaAdministradorUsuarios.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnBuscarActionPerformed
+
+    private void txtNombreKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNombreKeyTyped
+        // TODO add your handling code here:
+        int key = evt.getKeyChar();
+
+        boolean mayusculas = key >= 65 && key <= 90;
+        boolean minusculas = key >= 97 && key <= 122;
+        boolean espacio = key == 32;
+
+        if (!(minusculas || mayusculas || espacio)) {
+            evt.consume();
+            JOptionPane.showMessageDialog(null, "Solo hay periten caracteres alfabeticos");
+        }
+    }//GEN-LAST:event_txtNombreKeyTyped
+
+    private void txtTelefonoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTelefonoKeyTyped
+        // TODO add your handling code here:
+        int key = evt.getKeyChar();
+
+        boolean numeros = key >= 48 && key <= 57;
+
+        if (!numeros) {
+            evt.consume();
+            JOptionPane.showMessageDialog(null, "Solo hay perite digitos");
+        }
+
+        if (txtTelefono.getText().trim().length() == 10) {
+            evt.consume();
+            JOptionPane.showMessageDialog(null, "Solo hay perite 10 digitos");
+        }
+    }//GEN-LAST:event_txtTelefonoKeyTyped
+
+    private void txtNombreUsuarioKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNombreUsuarioKeyTyped
+        // TODO add your handling code here:
+        int key = evt.getKeyChar();
+
+        boolean mayusculas = key >= 65 && key <= 90;
+        boolean minusculas = key >= 97 && key <= 122;
+        boolean espacio = key == 32;
+
+        if (!(minusculas || mayusculas || espacio)) {
+            evt.consume();
+            JOptionPane.showMessageDialog(null, "Solo hay periten caracteres alfabeticos");
+        }
+    }//GEN-LAST:event_txtNombreUsuarioKeyTyped
+
+    private void txtDireccionKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDireccionKeyTyped
+        // TODO add your handling code here:
+        int key = evt.getKeyChar();
+
+        boolean mayusculas = key >= 65 && key <= 90;
+        boolean minusculas = key >= 97 && key <= 122;
+        boolean espacio = key == 32;
+
+        if (!(minusculas || mayusculas || espacio)) {
+            evt.consume();
+            JOptionPane.showMessageDialog(null, "Solo hay periten caracteres alfabeticos");
+        }
+    }//GEN-LAST:event_txtDireccionKeyTyped
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JToggleButton btenEliminar;

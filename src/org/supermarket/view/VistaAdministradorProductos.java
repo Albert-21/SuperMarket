@@ -190,7 +190,7 @@ public class VistaAdministradorProductos extends javax.swing.JInternalFrame {
         ));
         jScrollPane1.setViewportView(tablaProductos);
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 270, 660, 140));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 270, 660, 150));
 
         fondo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/supermarket/images/4882066.jpg"))); // NOI18N
         jPanel1.add(fondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 50, 660, 360));
@@ -202,16 +202,24 @@ public class VistaAdministradorProductos extends javax.swing.JInternalFrame {
 
     private void btnNewProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewProductoActionPerformed
         // TODO add your handling code here:
-        productos = new Productos(Long.parseLong(txtId_producto.getText().trim()), txtNombre.getText().trim(), txtDescripcion.getText().trim(), Long.parseLong(txtPrecio.getText().trim()), Long.parseLong(txtPiezasDisponibles.getText().trim()));
-        daoAlmacen.guardar(productos);
+        if ("".equals(txtId_producto.getText().trim()) && txtNombre.getText().trim() == "" && txtDescripcion.getText().trim() == "" && txtPrecio.getText().trim() == "" && txtPiezasDisponibles.getText().trim() == "") {
+
+        } else {
+            productos = new Productos(Long.parseLong(txtId_producto.getText().trim()), txtNombre.getText().trim(), txtDescripcion.getText().trim(), Long.parseLong(txtPrecio.getText().trim()), Long.parseLong(txtPiezasDisponibles.getText().trim()));
+            daoAlmacen.guardar(productos);
+        }
 
 
     }//GEN-LAST:event_btnNewProductoActionPerformed
 
     private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
         // TODO add your handling code here:
+         if ("".equals(txtId_producto.getText().trim()) && txtNombre.getText().trim() == "" && txtDescripcion.getText().trim() == "" && txtPrecio.getText().trim() == "" && txtPiezasDisponibles.getText().trim() == "") {
+
+        } else {
         productos = new Productos(Long.parseLong(txtId_producto.getText().trim()), txtNombre.getText().trim(), txtDescripcion.getText().trim(), Long.parseLong(txtPrecio.getText().trim()), Long.parseLong(txtPiezasDisponibles.getText().trim()));
         daoAlmacen.actualizar(productos);
+         }
     }//GEN-LAST:event_btnActualizarActionPerformed
 
     private void btenEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btenEliminarActionPerformed
