@@ -6,6 +6,7 @@
 package org.supermarket.view;
 
 import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import org.supermarket.controller.DAOAlmacen;
 import org.supermarket.model.Productos;
@@ -19,6 +20,7 @@ public class VistaEmpleadoAlmacen extends javax.swing.JInternalFrame {
     private static VistaEmpleadoAlmacen vistaEmpleadoAlmacen = null;
     private DAOAlmacen daoAlmacen;
     private DefaultTableModel modeloTabla;
+
     /**
      * Creates new form VistaEmpleadoAlmacen
      */
@@ -120,7 +122,7 @@ public class VistaEmpleadoAlmacen extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    public static VistaEmpleadoAlmacen getInstance(){
+    public static VistaEmpleadoAlmacen getInstance() {
         if (vistaEmpleadoAlmacen == null) {
             vistaEmpleadoAlmacen = new VistaEmpleadoAlmacen();
             return vistaEmpleadoAlmacen;
@@ -128,20 +130,21 @@ public class VistaEmpleadoAlmacen extends javax.swing.JInternalFrame {
         return vistaEmpleadoAlmacen;
     }
     private void btnConsultarAlamacenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarAlamacenActionPerformed
-        // TODO add your handling code here:
         modeloTabla.setRowCount(0);
         List<Productos> Lista = daoAlmacen.mostrarTodos();
-
-        Lista.forEach((productos) -> {
-            modeloTabla.addRow(new Object[]
-            {
-                productos.getIdProducto(),
-                productos.getNombre_producto(),
-                productos.getDescripcion(),
-                productos.getPrecio(),
-                productos.getPiezas()
+        if (Lista.size() == 0) {
+            JOptionPane.showMessageDialog(null, "No hay productos registrados aun");
+        } else {
+            Lista.forEach((productos) -> {
+                modeloTabla.addRow(new Object[]{
+                    productos.getIdProducto(),
+                    productos.getNombre_producto(),
+                    productos.getDescripcion(),
+                    productos.getPrecio(),
+                    productos.getPiezas()
+                });
             });
-        });
+        }
     }//GEN-LAST:event_btnConsultarAlamacenActionPerformed
 
 

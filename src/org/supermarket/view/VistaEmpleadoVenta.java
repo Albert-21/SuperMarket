@@ -262,41 +262,44 @@ public class VistaEmpleadoVenta extends javax.swing.JInternalFrame {
 
     private void btnRealizarVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRealizarVentaActionPerformed
         // TODO add your handling code here:
-        int respuesta;
-        long cantidad = Long.parseLong(JOptionPane.showInputDialog(null, "Ingrese la cantidad de dinero a ingresar"));
-        if (cantidad < TOTAL) {
-            JOptionPane.showMessageDialog(null, "Es una cantidad es menor a pagar");
+        if (listaVenta.size() == 0) {
+            JOptionPane.showMessageDialog(null, "No se han agregado productos");
         } else {
-            long cambio = cantidad - TOTAL;
-            respuesta = JOptionPane.showConfirmDialog(null, "Desea Continuar?", "Venta", JOptionPane.YES_NO_OPTION);
-            switch (respuesta) {
-                case 0:
-                    listaVenta.forEach((producto) -> {
-                        productos = daoAlmacen.mostrarUno(producto);
-                        long piezas = productos.getPiezas();
-                        producto.setPiezas(piezas - producto.getPiezas());
-                        daoAlmacen.actualizar(producto);
-                    });
-                    JOptionPane.showMessageDialog(null, "Cambio: " + cambio);
-                    String json = new Gson().toJson(temp);
-                    System.out.println(json);
-                    Ventas venta = new Ventas(formatoFecha.format(new Date()), formatoHora.format(new Date()), usuario.getId(), TOTAL, json);
-                    daoVentas.guardar(venta);
-                    modeloTabla.setRowCount(0);
-                    txtCantidad.setText("");
-                    txtIdProducto.setText("");
-                    txtSubTotal.setText("");
-                    txtTotal.setText("");
-                    listaVenta.clear();
-                    temp.clear();
-                    TOTAL = 0;
-                    modeloTabla.setRowCount(0);
-                    break;
-                case 1:
-                    JOptionPane.showMessageDialog(null, "Se cancelo la venta");
+            int respuesta;
+            long cantidad = Long.parseLong(JOptionPane.showInputDialog(null, "Ingrese la cantidad de dinero a ingresar"));
+            if (cantidad < TOTAL) {
+                JOptionPane.showMessageDialog(null, "La una cantidad es menor al monto a pagar");
+            } else {
+                long cambio = cantidad - TOTAL;
+                respuesta = JOptionPane.showConfirmDialog(null, "Desea Continuar?", "Venta", JOptionPane.YES_NO_OPTION);
+                switch (respuesta) {
+                    case 0:
+                        listaVenta.forEach((producto) -> {
+                            productos = daoAlmacen.mostrarUno(producto);
+                            long piezas = productos.getPiezas();
+                            producto.setPiezas(piezas - producto.getPiezas());
+                            daoAlmacen.actualizar(producto);
+                        });
+                        JOptionPane.showMessageDialog(null, "Cambio: " + cambio);
+                        String json = new Gson().toJson(temp);
+                        System.out.println(json);
+                        Ventas venta = new Ventas(formatoFecha.format(new Date()), formatoHora.format(new Date()), usuario.getId(), TOTAL, json);
+                        daoVentas.guardar(venta);
+                        modeloTabla.setRowCount(0);
+                        txtCantidad.setText("");
+                        txtIdProducto.setText("");
+                        txtSubTotal.setText("");
+                        txtTotal.setText("");
+                        listaVenta.clear();
+                        temp.clear();
+                        TOTAL = 0;
+                        modeloTabla.setRowCount(0);
+                        break;
+                    case 1:
+                        JOptionPane.showMessageDialog(null, "Se cancelo la venta");
+                }
             }
         }
-
     }//GEN-LAST:event_btnRealizarVentaActionPerformed
 
 

@@ -202,24 +202,22 @@ public class VistaAdministradorProductos extends javax.swing.JInternalFrame {
 
     private void btnNewProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewProductoActionPerformed
         // TODO add your handling code here:
-        if ("".equals(txtId_producto.getText().trim()) && txtNombre.getText().trim() == "" && txtDescripcion.getText().trim() == "" && txtPrecio.getText().trim() == "" && txtPiezasDisponibles.getText().trim() == "") {
-
+        if ("".equals(txtId_producto.getText().trim()) || txtNombre.getText().trim() == "" || txtDescripcion.getText().trim() == "" || txtPrecio.getText().trim() == "" || txtPiezasDisponibles.getText().trim() == "") {
+            JOptionPane.showMessageDialog(null, "Hay campos vacios");
         } else {
             productos = new Productos(Long.parseLong(txtId_producto.getText().trim()), txtNombre.getText().trim(), txtDescripcion.getText().trim(), Long.parseLong(txtPrecio.getText().trim()), Long.parseLong(txtPiezasDisponibles.getText().trim()));
             daoAlmacen.guardar(productos);
         }
-
-
     }//GEN-LAST:event_btnNewProductoActionPerformed
 
     private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
         // TODO add your handling code here:
-         if ("".equals(txtId_producto.getText().trim()) && txtNombre.getText().trim() == "" && txtDescripcion.getText().trim() == "" && txtPrecio.getText().trim() == "" && txtPiezasDisponibles.getText().trim() == "") {
-
+        if ("".equals(txtId_producto.getText().trim()) || txtNombre.getText().trim() == "" || txtDescripcion.getText().trim() == "" || txtPrecio.getText().trim() == "" || txtPiezasDisponibles.getText().trim() == "") {
+            JOptionPane.showMessageDialog(null, "Hay campos vacios");
         } else {
-        productos = new Productos(Long.parseLong(txtId_producto.getText().trim()), txtNombre.getText().trim(), txtDescripcion.getText().trim(), Long.parseLong(txtPrecio.getText().trim()), Long.parseLong(txtPiezasDisponibles.getText().trim()));
-        daoAlmacen.actualizar(productos);
-         }
+            productos = new Productos(Long.parseLong(txtId_producto.getText().trim()), txtNombre.getText().trim(), txtDescripcion.getText().trim(), Long.parseLong(txtPrecio.getText().trim()), Long.parseLong(txtPiezasDisponibles.getText().trim()));
+            daoAlmacen.actualizar(productos);
+        }
     }//GEN-LAST:event_btnActualizarActionPerformed
 
     private void btenEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btenEliminarActionPerformed
@@ -227,8 +225,11 @@ public class VistaAdministradorProductos extends javax.swing.JInternalFrame {
         long res = Long.parseLong(JOptionPane.showInputDialog(null, "Ingrese el id del producto"));
         productos = new Productos();
         productos.setIdProducto(res);
-
-        daoAlmacen.borrar(productos);
+        if (daoAlmacen.borrar(productos) == true) {
+            JOptionPane.showMessageDialog(null, "Eliminado");
+        } else {
+            JOptionPane.showMessageDialog(null, "Error al Eliminar");
+        }
     }//GEN-LAST:event_btenEliminarActionPerformed
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
@@ -239,27 +240,34 @@ public class VistaAdministradorProductos extends javax.swing.JInternalFrame {
         productos.setIdProducto(res);
 
         Productos prod = daoAlmacen.mostrarUno(productos);
-        modeloTabla.addRow(new Object[]{
-            prod.getIdProducto(),
-            prod.getNombre_producto(),
-            prod.getDescripcion(),
-            prod.getPiezas(),
-            prod.getPrecio()});
+        if (prod == null) {
+            JOptionPane.showMessageDialog(null, "El producto no existe");
+        } else {
+            modeloTabla.addRow(new Object[]{
+                prod.getIdProducto(),
+                prod.getNombre_producto(),
+                prod.getDescripcion(),
+                prod.getPiezas(),
+                prod.getPrecio()});
+        }
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void btnMostarTodoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMostarTodoActionPerformed
         // TODO add your handling code here:
         modeloTabla.setRowCount(0);
         List<Productos> Lista = daoAlmacen.mostrarTodos();
-
-        Lista.forEach((productos) -> {
-            modeloTabla.addRow(new Object[]{
-                productos.getIdProducto(),
-                productos.getNombre_producto(),
-                productos.getDescripcion(),
-                productos.getPiezas(),
-                productos.getPrecio(),});
-        });
+        if (Lista.size() == 0) {
+            JOptionPane.showMessageDialog(null, "No hay productos registrados aun");
+        } else {
+            Lista.forEach((productos) -> {
+                modeloTabla.addRow(new Object[]{
+                    productos.getIdProducto(),
+                    productos.getNombre_producto(),
+                    productos.getDescripcion(),
+                    productos.getPiezas(),
+                    productos.getPrecio(),});
+            });
+        }
     }//GEN-LAST:event_btnMostarTodoActionPerformed
 
     private void txtPrecioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPrecioActionPerformed

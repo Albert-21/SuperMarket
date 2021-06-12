@@ -228,7 +228,7 @@ public class VistaAdministradorUsuarios extends javax.swing.JInternalFrame {
     private void btnGuardarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarUsuarioActionPerformed
         try {
             // TODO add your handling code here:
-            if ("".equals(txtNombre.getText().trim()) && txtDireccion.getText().trim() == "" && txtTelefono.getText().trim() == "" && txtNombreUsuario.getText().trim() == "" && String.valueOf(txtContraseña.getPassword()) == "" && String.valueOf(comboRol.getSelectedItem()) == "") {
+            if ("".equals(txtNombre.getText().trim()) || txtDireccion.getText().trim() == "" || txtTelefono.getText().trim() == "" || txtNombreUsuario.getText().trim() == "" || String.valueOf(txtContraseña.getPassword()) == "" && String.valueOf(comboRol.getSelectedItem()) == "") {
                 JOptionPane.showMessageDialog(null, "Hay campos vacios");
             } else {
                 usuario = new Usuarios(txtNombre.getText().trim(), txtDireccion.getText().trim(), txtTelefono.getText().trim(), txtNombreUsuario.getText().trim(), String.valueOf(txtContraseña.getPassword()), String.valueOf(comboRol.getSelectedItem()));
@@ -244,15 +244,18 @@ public class VistaAdministradorUsuarios extends javax.swing.JInternalFrame {
     private void btnMostarTodoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMostarTodoActionPerformed
         // TODO add your handling code here:
         lista = daoUsuario.mostrarTodos();
-        modeloTabla.setRowCount(0);
-        lista.forEach((Usuarios usuario) -> {
-            try {
-                modeloTabla.addRow(new Object[]{usuario.getId(), usuario.getNombre_completo(), usuario.getDireccion(), usuario.getTelefono(), usuario.getNombre_usuario(), txtContraseña.getPassword(), usuario.getRol()});
-            } catch (Exception ex) {
-                Logger.getLogger(VistaAdministradorUsuarios.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        });
-
+        if (lista.size() == 0) {
+            JOptionPane.showMessageDialog(null, "No existen usuarios aun");
+        } else {
+            modeloTabla.setRowCount(0);
+            lista.forEach((Usuarios usuario) -> {
+                try {
+                    modeloTabla.addRow(new Object[]{usuario.getId(), usuario.getNombre_completo(), usuario.getDireccion(), usuario.getTelefono(), usuario.getNombre_usuario(), txtContraseña.getPassword(), usuario.getRol()});
+                } catch (Exception ex) {
+                    Logger.getLogger(VistaAdministradorUsuarios.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            });
+        }
     }//GEN-LAST:event_btnMostarTodoActionPerformed
 
     private void btenEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btenEliminarActionPerformed
@@ -261,7 +264,11 @@ public class VistaAdministradorUsuarios extends javax.swing.JInternalFrame {
         usuario = new Usuarios();
         usuario.setId(res);
 
-        daoUsuario.borrar(usuario);
+        if(daoUsuario.borrar(usuario)==true){
+            JOptionPane.showMessageDialog(null,"Eliminado");
+        }else{
+            JOptionPane.showMessageDialog(null,"Error al eliminar");
+        }
     }//GEN-LAST:event_btenEliminarActionPerformed
 
     private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
@@ -289,18 +296,22 @@ public class VistaAdministradorUsuarios extends javax.swing.JInternalFrame {
         usuario.setId(res);
 
         Usuarios result = daoUsuario.mostrarUno(usuario);
-        try {
-            modeloTabla.addRow(new Object[]{
-                result.getId(),
-                result.getNombre_completo(),
-                result.getDireccion(),
-                result.getTelefono(),
-                result.getNombre_usuario(),
-                result.getContraseña(),
-                result.getRol()
-            });
-        } catch (Exception ex) {
-            Logger.getLogger(VistaAdministradorUsuarios.class.getName()).log(Level.SEVERE, null, ex);
+        if (result == null) {
+            JOptionPane.showMessageDialog(null, "El usuario no existe");
+        } else {
+            try {
+                modeloTabla.addRow(new Object[]{
+                    result.getId(),
+                    result.getNombre_completo(),
+                    result.getDireccion(),
+                    result.getTelefono(),
+                    result.getNombre_usuario(),
+                    result.getContraseña(),
+                    result.getRol()
+                });
+            } catch (Exception ex) {
+                Logger.getLogger(VistaAdministradorUsuarios.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_btnBuscarActionPerformed
 
@@ -314,7 +325,7 @@ public class VistaAdministradorUsuarios extends javax.swing.JInternalFrame {
 
         if (!(minusculas || mayusculas || espacio)) {
             evt.consume();
-            JOptionPane.showMessageDialog(null, "Solo hay periten caracteres alfabeticos");
+            JOptionPane.showMessageDialog(null, "Solo se permiten caracteres alfabeticos");
         }
     }//GEN-LAST:event_txtNombreKeyTyped
 
@@ -326,12 +337,12 @@ public class VistaAdministradorUsuarios extends javax.swing.JInternalFrame {
 
         if (!numeros) {
             evt.consume();
-            JOptionPane.showMessageDialog(null, "Solo hay perite digitos");
+            JOptionPane.showMessageDialog(null, "Solo se permiten digitos");
         }
 
         if (txtTelefono.getText().trim().length() == 10) {
             evt.consume();
-            JOptionPane.showMessageDialog(null, "Solo hay perite 10 digitos");
+            JOptionPane.showMessageDialog(null, "Solo se permiten 10 digitos maximo");
         }
     }//GEN-LAST:event_txtTelefonoKeyTyped
 
@@ -345,7 +356,7 @@ public class VistaAdministradorUsuarios extends javax.swing.JInternalFrame {
 
         if (!(minusculas || mayusculas || espacio)) {
             evt.consume();
-            JOptionPane.showMessageDialog(null, "Solo hay periten caracteres alfabeticos");
+            JOptionPane.showMessageDialog(null, "Solo se permiten caracteres alfabeticos");
         }
     }//GEN-LAST:event_txtNombreUsuarioKeyTyped
 
@@ -359,7 +370,7 @@ public class VistaAdministradorUsuarios extends javax.swing.JInternalFrame {
 
         if (!(minusculas || mayusculas || espacio)) {
             evt.consume();
-            JOptionPane.showMessageDialog(null, "Solo hay periten caracteres alfabeticos");
+            JOptionPane.showMessageDialog(null, "Solo se permiten caracteres alfabeticos");
         }
     }//GEN-LAST:event_txtDireccionKeyTyped
 

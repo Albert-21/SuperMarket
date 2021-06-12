@@ -156,36 +156,44 @@ public class VistaAdministradorVentas extends javax.swing.JInternalFrame {
         ventas.setId(res);
 
         Ventas vet = daoVentas.mostrarUno(ventas);
-        modeloTabla.addRow(new Object[]{
-            vet.getId(),
-            vet.getFecha(),
-            vet.getId_empleado(),
-            vet.getHora(),
-            vet.getTotal()
-        });
+        if (vet == null) {
+            JOptionPane.showMessageDialog(null, "El registro que estas buscando no existe");
+        } else {
+            modeloTabla.addRow(new Object[]{
+                vet.getId(),
+                vet.getFecha(),
+                vet.getId_empleado(),
+                vet.getHora(),
+                vet.getTotal()
+            });
+        }
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void btnMostrarTodoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMostrarTodoActionPerformed
         // TODO add your handling code here:
         modeloTabla.setRowCount(0);
         List<Ventas> Lista = daoVentas.mostrarTodos();
-        Lista.forEach((venta) -> {
-            Gson jsonArray = new Gson();
-            List<Productos> lista = jsonArray.fromJson(venta.getLista(), type);
-            comboBox = new JComboBox();
-            for (Productos productos : lista) {
-                comboBox.addItem(productos.getNombre_producto());
-            }
-            tablaVentas.getColumnModel().getColumn(4).setCellEditor(new DefaultCellEditor(comboBox));
-            modeloTabla.addRow(new Object[]{
-                venta.getId(),
-                venta.getFecha(),
-                venta.getId_empleado(),
-                venta.getHora(),
-                "",
-                venta.getTotal()
+        if (Lista.size() == 0) {
+            JOptionPane.showMessageDialog(null, "No existen registros aun");
+        } else {
+            Lista.forEach((venta) -> {
+                Gson jsonArray = new Gson();
+                List<Productos> lista = jsonArray.fromJson(venta.getLista(), type);
+                comboBox = new JComboBox();
+                for (Productos productos : lista) {
+                    comboBox.addItem(productos.getNombre_producto());
+                }
+                tablaVentas.getColumnModel().getColumn(4).setCellEditor(new DefaultCellEditor(comboBox));
+                modeloTabla.addRow(new Object[]{
+                    venta.getId(),
+                    venta.getFecha(),
+                    venta.getId_empleado(),
+                    venta.getHora(),
+                    "",
+                    venta.getTotal()
+                });
             });
-        });
+        }
     }//GEN-LAST:event_btnMostrarTodoActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
