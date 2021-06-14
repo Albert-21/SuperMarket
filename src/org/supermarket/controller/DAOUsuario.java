@@ -68,6 +68,7 @@ public class DAOUsuario implements DaoGeneral<Usuarios> {
         session = HibernateUtil.getSessionFactory().openSession();
         Transaction transaction = session.beginTransaction();
         try {
+            session.createSQLQuery("DELETE FROM ventas WHERE id_empleado = "+pojo.getId()).executeUpdate();
             session.delete(pojo);
             res = true;
             transaction.commit();
