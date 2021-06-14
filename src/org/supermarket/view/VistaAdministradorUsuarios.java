@@ -40,6 +40,13 @@ public class VistaAdministradorUsuarios extends javax.swing.JInternalFrame {
         }
         return vistaAdministradorUsuarios;
     }
+    private void limpiar(){
+        txtNombre.setText("");
+         txtDireccion.setText("");
+         txtTelefono.setText("");
+         txtNombreUsuario.setText("");
+         txtContraseña.setText("");
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -220,7 +227,7 @@ public class VistaAdministradorUsuarios extends javax.swing.JInternalFrame {
         fondo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/supermarket/images/4882066.jpg"))); // NOI18N
         jPanel1.add(fondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 50, 780, 360));
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 780, 410));
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 780, 520));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -228,11 +235,17 @@ public class VistaAdministradorUsuarios extends javax.swing.JInternalFrame {
     private void btnGuardarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarUsuarioActionPerformed
         try {
             // TODO add your handling code here:
-            if ("".equals(txtNombre.getText().trim()) || txtDireccion.getText().trim() == "" || txtTelefono.getText().trim() == "" || txtNombreUsuario.getText().trim() == "" || String.valueOf(txtContraseña.getPassword()) == "" && String.valueOf(comboRol.getSelectedItem()) == "") {
-                JOptionPane.showMessageDialog(null, "Hay campos vacios");
-            } else {
+            if (txtNombre.getText().trim().length() > 0 && txtDireccion.getText().trim().length() > 0 && txtTelefono.getText().trim().length() > 0 && txtNombreUsuario.getText().trim().length() > 0 && String.valueOf(txtContraseña.getPassword()).length() > 0) {
                 usuario = new Usuarios(txtNombre.getText().trim(), txtDireccion.getText().trim(), txtTelefono.getText().trim(), txtNombreUsuario.getText().trim(), String.valueOf(txtContraseña.getPassword()), String.valueOf(comboRol.getSelectedItem()));
-                daoUsuario.guardar(usuario);
+             
+                if (daoUsuario.guardar(usuario)) {
+                    JOptionPane.showMessageDialog(null, "Se guardo correctamente");
+                } else {
+                    JOptionPane.showMessageDialog(null, "Ocurrio un problema");
+                }
+                limpiar();
+            } else {
+                JOptionPane.showMessageDialog(null, "Hay campos vacios");
             }
 
         } catch (Exception ex) {
@@ -264,10 +277,10 @@ public class VistaAdministradorUsuarios extends javax.swing.JInternalFrame {
         usuario = new Usuarios();
         usuario.setId(res);
 
-        if(daoUsuario.borrar(usuario)==true){
-            JOptionPane.showMessageDialog(null,"Eliminado");
-        }else{
-            JOptionPane.showMessageDialog(null,"Error al eliminar");
+        if (daoUsuario.borrar(usuario)) {
+            JOptionPane.showMessageDialog(null, "Eliminado");
+        } else {
+            JOptionPane.showMessageDialog(null, "Error al eliminar");
         }
     }//GEN-LAST:event_btenEliminarActionPerformed
 
@@ -277,10 +290,15 @@ public class VistaAdministradorUsuarios extends javax.swing.JInternalFrame {
             usuario = new Usuarios(txtNombre.getText().trim(), txtDireccion.getText().trim(), txtTelefono.getText().trim(), txtNombreUsuario.getText().trim(), String.valueOf(txtContraseña.getPassword()), String.valueOf(comboRol.getSelectedItem()));
             long res = Long.parseLong(JOptionPane.showInputDialog(null, "Ingrese el id"));
             usuario.setId(res);
-            if ("".equals(txtNombre.getText().trim()) && txtDireccion.getText().trim() == "" && txtTelefono.getText().trim() == "" && txtNombreUsuario.getText().trim() == "" && String.valueOf(txtContraseña.getPassword()) == "" && String.valueOf(comboRol.getSelectedItem()) == "") {
-                JOptionPane.showMessageDialog(null, "Hay campos vacios");
+            if (txtNombre.getText().trim().length() > 0 && txtDireccion.getText().trim().length() > 0 && txtTelefono.getText().trim().length() > 0 && txtNombreUsuario.getText().trim().length() > 0 && String.valueOf(txtContraseña.getPassword()).length() > 0) {
+                if (daoUsuario.actualizar(usuario)) {
+                    JOptionPane.showMessageDialog(null, "Se actualizo correctamente");
+                } else {
+                    JOptionPane.showMessageDialog(null, "Ocurrio un problema");
+                }
+                limpiar();
             } else {
-                daoUsuario.actualizar(usuario);
+                JOptionPane.showMessageDialog(null, "Hay campos vacios");
             }
         } catch (Exception ex) {
             Logger.getLogger(VistaAdministradorUsuarios.class.getName()).log(Level.SEVERE, null, ex);

@@ -39,12 +39,10 @@ public class DAOVentas implements DaoGeneral<Ventas> {
             res = true;
             transaction.commit();
             System.out.print("Guardado");
-            JOptionPane.showMessageDialog(null,"Guardado");
         } catch (HibernateException e) {
             transaction.rollback();
             Logger.getLogger(DAOAlmacen.class.getName()).log(Level.SEVERE, null, e);
             System.out.print("No se pudo guardar");
-            JOptionPane.showMessageDialog(null,"No se pudo guardar");
         } finally {
             session.close();
         }
@@ -60,7 +58,6 @@ public class DAOVentas implements DaoGeneral<Ventas> {
             session.delete(pojo);
             res = true;
             transaction.commit();
-            JOptionPane.showMessageDialog(null,"Borrado");
         } catch (HibernateException e) {
             transaction.rollback();
             Logger.getLogger(DAOAlmacen.class.getName()).log(Level.SEVERE, null, e);
@@ -80,7 +77,6 @@ public class DAOVentas implements DaoGeneral<Ventas> {
             session.update(pojo);
             res = true;
             transaction.commit();
-            JOptionPane.showMessageDialog(null,"Actualizado");
         } catch (HibernateException e) {
             transaction.rollback();
             Logger.getLogger(DAOAlmacen.class.getName()).log(Level.SEVERE, null, e);

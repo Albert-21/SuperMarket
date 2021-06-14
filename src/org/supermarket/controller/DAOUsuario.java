@@ -51,9 +51,6 @@ public class DAOUsuario implements DaoGeneral<Usuarios> {
                 session.save(pojo);
                 res = true;
                 transaction.commit();
-                JOptionPane.showMessageDialog(null, "Guardado");
-            }else{
-                JOptionPane.showMessageDialog(null, "Actualizado");
             }
         } catch (HibernateException e) {
             transaction.rollback();
@@ -74,7 +71,6 @@ public class DAOUsuario implements DaoGeneral<Usuarios> {
             session.delete(pojo);
             res = true;
             transaction.commit();
-            JOptionPane.showMessageDialog(null, "Borrado");
         } catch (HibernateException e) {
             transaction.rollback();
             Logger.getLogger(DAOUsuario.class.getName()).log(Level.SEVERE, null, e);
@@ -95,9 +91,6 @@ public class DAOUsuario implements DaoGeneral<Usuarios> {
                 session.update(pojo);
                 res = true;
                 transaction.commit();
-                JOptionPane.showMessageDialog(null, "Actualizado");
-            }else{
-                JOptionPane.showMessageDialog(null, "Error");
             }
         } catch (HibernateException e) {
             transaction.rollback();

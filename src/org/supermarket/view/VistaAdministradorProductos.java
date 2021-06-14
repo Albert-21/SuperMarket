@@ -202,21 +202,33 @@ public class VistaAdministradorProductos extends javax.swing.JInternalFrame {
 
     private void btnNewProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewProductoActionPerformed
         // TODO add your handling code here:
-        if ("".equals(txtId_producto.getText().trim()) || txtNombre.getText().trim() == "" || txtDescripcion.getText().trim() == "" || txtPrecio.getText().trim() == "" || txtPiezasDisponibles.getText().trim() == "") {
-            JOptionPane.showMessageDialog(null, "Hay campos vacios");
-        } else {
+        if (txtId_producto.getText().trim().length() > 0 && txtNombre.getText().trim().length() > 0 && txtDescripcion.getText().trim().length() > 0 && txtPrecio.getText().trim().length() > 0 && txtPiezasDisponibles.getText().trim().length() > 0) {
             productos = new Productos(Long.parseLong(txtId_producto.getText().trim()), txtNombre.getText().trim(), txtDescripcion.getText().trim(), Long.parseLong(txtPrecio.getText().trim()), Long.parseLong(txtPiezasDisponibles.getText().trim()));
-            daoAlmacen.guardar(productos);
+
+            if (daoAlmacen.guardar(productos)) {
+                JOptionPane.showMessageDialog(null, "se guardo correctamente");
+            } else {
+                JOptionPane.showMessageDialog(null, "Ocurrio un problema");
+            }
+            
+        } else {
+            JOptionPane.showMessageDialog(null, "Hay campos vacios");
         }
     }//GEN-LAST:event_btnNewProductoActionPerformed
 
     private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
         // TODO add your handling code here:
-        if ("".equals(txtId_producto.getText().trim()) || txtNombre.getText().trim() == "" || txtDescripcion.getText().trim() == "" || txtPrecio.getText().trim() == "" || txtPiezasDisponibles.getText().trim() == "") {
-            JOptionPane.showMessageDialog(null, "Hay campos vacios");
-        } else {
+        if (txtId_producto.getText().trim().length() > 0 && txtNombre.getText().trim().length() > 0 && txtDescripcion.getText().trim().length() > 0 && txtPrecio.getText().trim().length() > 0 && txtPiezasDisponibles.getText().trim().length() > 0) {
             productos = new Productos(Long.parseLong(txtId_producto.getText().trim()), txtNombre.getText().trim(), txtDescripcion.getText().trim(), Long.parseLong(txtPrecio.getText().trim()), Long.parseLong(txtPiezasDisponibles.getText().trim()));
-            daoAlmacen.actualizar(productos);
+
+            if (daoAlmacen.actualizar(productos)) {
+                JOptionPane.showMessageDialog(null, "se actualizo correctamente");
+            } else {
+                JOptionPane.showMessageDialog(null, "Ocurrio un problema");
+            }
+            
+        } else {
+            JOptionPane.showMessageDialog(null, "Hay campos vacios");
         }
     }//GEN-LAST:event_btnActualizarActionPerformed
 
@@ -225,7 +237,7 @@ public class VistaAdministradorProductos extends javax.swing.JInternalFrame {
         long res = Long.parseLong(JOptionPane.showInputDialog(null, "Ingrese el id del producto"));
         productos = new Productos();
         productos.setIdProducto(res);
-        if (daoAlmacen.borrar(productos) == true) {
+        if (daoAlmacen.borrar(productos)) {
             JOptionPane.showMessageDialog(null, "Eliminado");
         } else {
             JOptionPane.showMessageDialog(null, "Error al Eliminar");

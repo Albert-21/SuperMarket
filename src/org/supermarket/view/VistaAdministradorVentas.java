@@ -145,7 +145,11 @@ public class VistaAdministradorVentas extends javax.swing.JInternalFrame {
         ventas = new Ventas();
         ventas.setId(res);
 
-        daoVentas.borrar(ventas);
+        if (daoVentas.borrar(ventas)) {
+            JOptionPane.showMessageDialog(null, "Se borro correctamente");
+        } else {
+            JOptionPane.showMessageDialog(null, "Ocurrio un problema");
+        }
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
