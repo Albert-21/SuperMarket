@@ -208,30 +208,30 @@ public class VistaAdministradorProductos extends javax.swing.JInternalFrame {
             productos = new Productos(Long.parseLong(txtId_producto.getText().trim()), txtNombre.getText().trim(), txtDescripcion.getText().trim(), Long.parseLong(txtPrecio.getText().trim()), Long.parseLong(txtPiezasDisponibles.getText().trim()));
 
             if (daoAlmacen.guardar(productos)) {
-                JOptionPane.showMessageDialog(null, "se guardo correctamente");
+                JOptionPane.showMessageDialog(null, "Se Guardo Correctamente");
             } else {
-                JOptionPane.showMessageDialog(null, "Ocurrio un problema");
+                JOptionPane.showMessageDialog(null, "Ocurrio Un Problema");
             }
 
         } else {
-            JOptionPane.showMessageDialog(null, "Hay campos vacios");
+            JOptionPane.showMessageDialog(null, "Hay Campos Vacios");
         }
     }//GEN-LAST:event_btnNewProductoActionPerformed
 
     private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
         // TODO add your handling code here:
         try {
-            long res = Long.parseLong(JOptionPane.showInputDialog(null, "Ingrese el id"));
+            long res = Long.parseLong(JOptionPane.showInputDialog(null, "Ingrese El Id"));
             if (txtNombre.getText().trim().length() > 0 && txtDescripcion.getText().trim().length() > 0 && txtPrecio.getText().trim().length() > 0 && txtPiezasDisponibles.getText().trim().length() > 0) {
                 productos = new Productos(Long.parseLong(txtId_producto.getText().trim()), txtNombre.getText().trim(), txtDescripcion.getText().trim(), Long.parseLong(txtPrecio.getText().trim()), Long.parseLong(txtPiezasDisponibles.getText().trim()));
                 productos.setIdProducto(res);
                 if (daoAlmacen.actualizar(productos)) {
-                    JOptionPane.showMessageDialog(null, "se actualizo correctamente");
+                    JOptionPane.showMessageDialog(null, "Se Actualizo Correctamente");
                 } else {
-                    JOptionPane.showMessageDialog(null, "Ocurrio un problema");
+                    JOptionPane.showMessageDialog(null, "Ocurrio Un Problema");
                 }
             } else {
-                JOptionPane.showMessageDialog(null, "Hay campos vacios");
+                JOptionPane.showMessageDialog(null, "Hay Campos Vacios");
             }
         } catch (Exception e) {
             Logger.getLogger(VistaAdministradorProductos.class.getName()).log(Level.SEVERE, null, e);
@@ -241,11 +241,11 @@ public class VistaAdministradorProductos extends javax.swing.JInternalFrame {
 
     private void btenEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btenEliminarActionPerformed
         // TODO add your handling code here:
-        long res = Long.parseLong(JOptionPane.showInputDialog(null, "Ingrese el id del producto"));
+        long res = Long.parseLong(JOptionPane.showInputDialog(null, "Ingrese El Id Del Producto"));
         productos = new Productos();
         productos.setIdProducto(res);
         if (daoAlmacen.borrar(productos)) {
-            JOptionPane.showMessageDialog(null, "Eliminado");
+            JOptionPane.showMessageDialog(null, "Eliminado Correctamente");
         } else {
             JOptionPane.showMessageDialog(null, "Error al Eliminar");
         }
@@ -254,13 +254,13 @@ public class VistaAdministradorProductos extends javax.swing.JInternalFrame {
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
         // TODO add your handling code here:
         modeloTabla.setRowCount(0);
-        long res = Long.parseLong(JOptionPane.showInputDialog(null, "Ingrese el id del producto"));
+        long res = Long.parseLong(JOptionPane.showInputDialog(null, "Ingrese El Id Del Producto"));
         productos = new Productos();
         productos.setIdProducto(res);
 
         Productos prod = daoAlmacen.mostrarUno(productos);
         if (prod == null) {
-            JOptionPane.showMessageDialog(null, "El producto no existe");
+            JOptionPane.showMessageDialog(null, "El Producto No Existe");
         } else {
             modeloTabla.addRow(new Object[]{
                 prod.getIdProducto(),
@@ -276,7 +276,7 @@ public class VistaAdministradorProductos extends javax.swing.JInternalFrame {
         modeloTabla.setRowCount(0);
         List<Productos> Lista = daoAlmacen.mostrarTodos();
         if (Lista.size() == 0) {
-            JOptionPane.showMessageDialog(null, "No hay productos registrados aun");
+            JOptionPane.showMessageDialog(null, "No hay Productos Registrados Aun");
         } else {
             Lista.forEach((productos) -> {
                 modeloTabla.addRow(new Object[]{

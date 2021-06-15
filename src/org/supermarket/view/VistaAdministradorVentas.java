@@ -141,27 +141,27 @@ public class VistaAdministradorVentas extends javax.swing.JInternalFrame {
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         // TODO add your handling code here:
-        long res = Long.parseLong(JOptionPane.showInputDialog(null, "Ingrese el id"));
+        long res = Long.parseLong(JOptionPane.showInputDialog(null, "Ingrese el Id"));
         ventas = new Ventas();
         ventas.setId(res);
 
         if (daoVentas.borrar(ventas)) {
-            JOptionPane.showMessageDialog(null, "Se borro correctamente");
+            JOptionPane.showMessageDialog(null, "Se Elimino Correctamente");
         } else {
-            JOptionPane.showMessageDialog(null, "Ocurrio un problema");
+            JOptionPane.showMessageDialog(null, "Ocurrio Un Problema");
         }
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
         // TODO add your handling code here:
         modeloTabla.setRowCount(0);
-        long res = Long.parseLong(JOptionPane.showInputDialog(null, "Ingrese el id del producto"));
+        long res = Long.parseLong(JOptionPane.showInputDialog(null, "Ingrese El Id Del Producto"));
         ventas = new Ventas();
         ventas.setId(res);
 
         Ventas vet = daoVentas.mostrarUno(ventas);
         if (vet == null) {
-            JOptionPane.showMessageDialog(null, "El registro que estas buscando no existe");
+            JOptionPane.showMessageDialog(null, "El Registro No Existe");
         } else {
             modeloTabla.addRow(new Object[]{
                 vet.getId(),
@@ -178,7 +178,7 @@ public class VistaAdministradorVentas extends javax.swing.JInternalFrame {
         modeloTabla.setRowCount(0);
         List<Ventas> Lista = daoVentas.mostrarTodos();
         if (Lista.size() == 0) {
-            JOptionPane.showMessageDialog(null, "No existen registros aun");
+            JOptionPane.showMessageDialog(null, "No Existen Registros Aun");
         } else {
             Lista.forEach((venta) -> {
                 Gson jsonArray = new Gson();

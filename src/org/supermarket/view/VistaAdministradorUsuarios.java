@@ -273,12 +273,12 @@ public class VistaAdministradorUsuarios extends javax.swing.JInternalFrame {
 
     private void btenEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btenEliminarActionPerformed
         // TODO add your handling code here:
-        long res = Long.parseLong(JOptionPane.showInputDialog(null, "Ingrese el id"));
+        long res = Long.parseLong(JOptionPane.showInputDialog(null, "Ingrese el Id"));
         usuario = new Usuarios();
         usuario.setId(res);
 
         if (daoUsuario.borrar(usuario)) {
-            JOptionPane.showMessageDialog(null, "Eliminado");
+            JOptionPane.showMessageDialog(null, "Eliminado Correctamente");
         } else {
             JOptionPane.showMessageDialog(null, "Error al eliminar");
         }
@@ -307,7 +307,7 @@ public class VistaAdministradorUsuarios extends javax.swing.JInternalFrame {
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
         // TODO add your handling code here:
         modeloTabla.setRowCount(0);
-        long res = Long.parseLong(JOptionPane.showInputDialog(null, "Ingrese el id del Usuario"));
+        long res = Long.parseLong(JOptionPane.showInputDialog(null, "Ingrese el Id del Usuario"));
         usuario = new Usuarios();
         usuario.setId(res);
 
@@ -341,7 +341,7 @@ public class VistaAdministradorUsuarios extends javax.swing.JInternalFrame {
 
         if (!(minusculas || mayusculas || espacio)) {
             evt.consume();
-            JOptionPane.showMessageDialog(null, "Solo se permiten caracteres alfabeticos");
+            JOptionPane.showMessageDialog(null, "Solo se permiten caracteres alfabéticos");
         }
     }//GEN-LAST:event_txtNombreKeyTyped
 
@@ -353,12 +353,12 @@ public class VistaAdministradorUsuarios extends javax.swing.JInternalFrame {
 
         if (!numeros) {
             evt.consume();
-            JOptionPane.showMessageDialog(null, "Solo se permiten digitos");
+            JOptionPane.showMessageDialog(null, "Solo se permiten dígitos");
         }
 
         if (txtTelefono.getText().trim().length() == 10) {
             evt.consume();
-            JOptionPane.showMessageDialog(null, "Solo se permiten 10 digitos maximo");
+            JOptionPane.showMessageDialog(null, "Solo se permiten 10 dígitos máximo");
         }
     }//GEN-LAST:event_txtTelefonoKeyTyped
 
@@ -372,7 +372,7 @@ public class VistaAdministradorUsuarios extends javax.swing.JInternalFrame {
 
         if (!(minusculas || mayusculas || espacio)) {
             evt.consume();
-            JOptionPane.showMessageDialog(null, "Solo se permiten caracteres alfabeticos");
+            JOptionPane.showMessageDialog(null, "Solo se permiten caracteres alfabéticos");
         }
     }//GEN-LAST:event_txtNombreUsuarioKeyTyped
 
@@ -386,7 +386,7 @@ public class VistaAdministradorUsuarios extends javax.swing.JInternalFrame {
 
         if (!(minusculas || mayusculas || espacio)) {
             evt.consume();
-            JOptionPane.showMessageDialog(null, "Solo se permiten caracteres alfabeticos");
+            JOptionPane.showMessageDialog(null, "Solo se permiten caracteres alfabéticos");
         }
     }//GEN-LAST:event_txtDireccionKeyTyped
 
