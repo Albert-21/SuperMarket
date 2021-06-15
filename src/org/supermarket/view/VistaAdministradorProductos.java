@@ -6,6 +6,8 @@
 package org.supermarket.view;
 
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import org.supermarket.controller.DAOAlmacen;
@@ -210,7 +212,7 @@ public class VistaAdministradorProductos extends javax.swing.JInternalFrame {
             } else {
                 JOptionPane.showMessageDialog(null, "Ocurrio un problema");
             }
-            
+
         } else {
             JOptionPane.showMessageDialog(null, "Hay campos vacios");
         }
@@ -218,18 +220,23 @@ public class VistaAdministradorProductos extends javax.swing.JInternalFrame {
 
     private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
         // TODO add your handling code here:
-        if (txtId_producto.getText().trim().length() > 0 && txtNombre.getText().trim().length() > 0 && txtDescripcion.getText().trim().length() > 0 && txtPrecio.getText().trim().length() > 0 && txtPiezasDisponibles.getText().trim().length() > 0) {
-            productos = new Productos(Long.parseLong(txtId_producto.getText().trim()), txtNombre.getText().trim(), txtDescripcion.getText().trim(), Long.parseLong(txtPrecio.getText().trim()), Long.parseLong(txtPiezasDisponibles.getText().trim()));
-
-            if (daoAlmacen.actualizar(productos)) {
-                JOptionPane.showMessageDialog(null, "se actualizo correctamente");
+        try {
+            long res = Long.parseLong(JOptionPane.showInputDialog(null, "Ingrese el id"));
+            if (txtNombre.getText().trim().length() > 0 && txtDescripcion.getText().trim().length() > 0 && txtPrecio.getText().trim().length() > 0 && txtPiezasDisponibles.getText().trim().length() > 0) {
+                productos = new Productos(Long.parseLong(txtId_producto.getText().trim()), txtNombre.getText().trim(), txtDescripcion.getText().trim(), Long.parseLong(txtPrecio.getText().trim()), Long.parseLong(txtPiezasDisponibles.getText().trim()));
+                productos.setIdProducto(res);
+                if (daoAlmacen.actualizar(productos)) {
+                    JOptionPane.showMessageDialog(null, "se actualizo correctamente");
+                } else {
+                    JOptionPane.showMessageDialog(null, "Ocurrio un problema");
+                }
             } else {
-                JOptionPane.showMessageDialog(null, "Ocurrio un problema");
+                JOptionPane.showMessageDialog(null, "Hay campos vacios");
             }
-            
-        } else {
-            JOptionPane.showMessageDialog(null, "Hay campos vacios");
+        } catch (Exception e) {
+            Logger.getLogger(VistaAdministradorProductos.class.getName()).log(Level.SEVERE, null, e);
         }
+
     }//GEN-LAST:event_btnActualizarActionPerformed
 
     private void btenEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btenEliminarActionPerformed

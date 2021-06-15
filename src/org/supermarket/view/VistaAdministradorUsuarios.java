@@ -40,12 +40,13 @@ public class VistaAdministradorUsuarios extends javax.swing.JInternalFrame {
         }
         return vistaAdministradorUsuarios;
     }
-    private void limpiar(){
+
+    private void limpiar() {
         txtNombre.setText("");
-         txtDireccion.setText("");
-         txtTelefono.setText("");
-         txtNombreUsuario.setText("");
-         txtContraseña.setText("");
+        txtDireccion.setText("");
+        txtTelefono.setText("");
+        txtNombreUsuario.setText("");
+        txtContraseña.setText("");
     }
 
     /**
@@ -237,7 +238,6 @@ public class VistaAdministradorUsuarios extends javax.swing.JInternalFrame {
             // TODO add your handling code here:
             if (txtNombre.getText().trim().length() > 0 && txtDireccion.getText().trim().length() > 0 && txtTelefono.getText().trim().length() > 0 && txtNombreUsuario.getText().trim().length() > 0 && String.valueOf(txtContraseña.getPassword()).length() > 0) {
                 usuario = new Usuarios(txtNombre.getText().trim(), txtDireccion.getText().trim(), txtTelefono.getText().trim(), txtNombreUsuario.getText().trim(), String.valueOf(txtContraseña.getPassword()), String.valueOf(comboRol.getSelectedItem()));
-             
                 if (daoUsuario.guardar(usuario)) {
                     JOptionPane.showMessageDialog(null, "Se guardo correctamente");
                 } else {
@@ -286,11 +286,10 @@ public class VistaAdministradorUsuarios extends javax.swing.JInternalFrame {
 
     private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
         try {
-            // TODO add your handling code here:
-            usuario = new Usuarios(txtNombre.getText().trim(), txtDireccion.getText().trim(), txtTelefono.getText().trim(), txtNombreUsuario.getText().trim(), String.valueOf(txtContraseña.getPassword()), String.valueOf(comboRol.getSelectedItem()));
             long res = Long.parseLong(JOptionPane.showInputDialog(null, "Ingrese el id"));
-            usuario.setId(res);
             if (txtNombre.getText().trim().length() > 0 && txtDireccion.getText().trim().length() > 0 && txtTelefono.getText().trim().length() > 0 && txtNombreUsuario.getText().trim().length() > 0 && String.valueOf(txtContraseña.getPassword()).length() > 0) {
+                usuario = new Usuarios(txtNombre.getText().trim(), txtDireccion.getText().trim(), txtTelefono.getText().trim(), txtNombreUsuario.getText().trim(), String.valueOf(txtContraseña.getPassword()), String.valueOf(comboRol.getSelectedItem()));
+                usuario.setId(res);
                 if (daoUsuario.actualizar(usuario)) {
                     JOptionPane.showMessageDialog(null, "Se actualizo correctamente");
                 } else {
@@ -300,10 +299,9 @@ public class VistaAdministradorUsuarios extends javax.swing.JInternalFrame {
             } else {
                 JOptionPane.showMessageDialog(null, "Hay campos vacios");
             }
-        } catch (Exception ex) {
+        }catch (Exception ex) {
             Logger.getLogger(VistaAdministradorUsuarios.class.getName()).log(Level.SEVERE, null, ex);
         }
-        daoUsuario.actualizar(usuario);
     }//GEN-LAST:event_btnActualizarActionPerformed
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed

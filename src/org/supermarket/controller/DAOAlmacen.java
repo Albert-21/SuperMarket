@@ -57,8 +57,8 @@ public class DAOAlmacen implements DaoGeneral<Productos> {
         Transaction transaction = session.beginTransaction();
         try {
             session.delete(pojo);
-            res = true;
             transaction.commit();
+            res = true;
         } catch (HibernateException e) {
             transaction.rollback();
             Logger.getLogger(DAOAlmacen.class.getName()).log(Level.SEVERE, null, e);
